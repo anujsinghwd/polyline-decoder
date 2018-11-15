@@ -18,14 +18,14 @@ class Polyline
     {
         /**
         * If points in string format
-            $points = '77.2681117 28.5495164,77.2675753 28.5515426,77.2674680 28.5539929,77.2665989 28.5551331,77.2633159 28.5577529,77.2506559 28.5625023,77.2525871 28.5667802';
-            $i =0;
-            $points = explode(",", $points);
-            foreach($points as $sub){
-                $points[$i] = array_reverse(explode(' ', $sub));
-                $i++;
-            }
-            $points = self::flatten($points);
+          * $points = '77.2681117 28.5495164,77.2675753 28.5515426,77.2674680 28.5539929,77.2665989 28.5551331,77.2633159 28.5577529,77.2506559 28.5625023,77.2525871 28.5667802';
+          *  $i =0;
+          * $points = explode(",", $points);
+          *  foreach($points as $sub){
+          *      $points[$i] = array_reverse(explode(' ', $sub));
+          *      $i++;
+          *  }
+          *  $points = self::flatten($points);
         */
         $points = self::flatten($points = array(
             array(41.89084,-87.62386),
@@ -83,11 +83,11 @@ class Polyline
         }
         /*
         * Returning a string like(lng lat, lng lat......)
-            foreach (array_chunk($points, 2) as $sub) {
-                $tmpArr[] = implode(' ', array_reverse($sub));
-            }
-            $result = implode(',', $tmpArr);
-            return $result;
+          *  foreach (array_chunk($points, 2) as $sub) {
+          *      $tmpArr[] = implode(' ', array_reverse($sub));
+          *  }
+          *  $result = implode(',', $tmpArr);
+          *  return $result;
         */
         return $points;
     }
