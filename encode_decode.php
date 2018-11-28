@@ -63,22 +63,34 @@ class Polyline
     final public static function decode()
     {
         $result = array();
-        $string = "o`y{nAfjccfDg@{aAfc@g@?nbA_b@R";
+        $result = array();
+        $value = filter_var($path, FILTER_SANITIZE_STRING); //decoded string goes here
+        $index = 0;
         $points = array();
-        $index = $i = 0;
-        $previous = array(0,0);
-        while ($i < strlen($string)) {
-            $shift = $result = 0x00;
+        $lat = 0;
+        $lng = 0;
+        while ($index < strlen($value)) {
+            $b;
+            $shift = 0;
+            $result = 0;
             do {
-                $bit = ord(substr($string, $i++)) - 63;
-                $result |= ($bit & 0x1f) << $shift;
+                $b = ord(substr($value, $index++, 1)) - 63;
+                $result |= ($b & 0x1f) << $shift;
                 $shift += 5;
-            } while ($bit >= 0x20);
-            $diff = ($result & 1) ? ~($result >> 1) : ($result >> 1);
-            $number = $previous[$index % 2] + $diff;
-            $previous[$index % 2] = $number;
-            $index++;
-            $points[] = $number * 1 / pow(10, static::$precision);
+            } while ($b > 31);
+            $dlat = (($result & 1) ? ~($result >> 1) : ($result >> 1));
+            $lat += $dlat;
+            $shift = 0;
+            $result = 0;
+            do {
+                $b = ord(substr($value, $index++, 1)) - 63;
+                $result |= ($b & 0x1f) << $shift;
+                $shift += 5;
+            } while ($b > 31);
+            $dlng = (($result & 1) ? ~($result >> 1) : ($result >> 1));
+            $lng += $dlng;
+            $points[] = array($lat/pow(10, static::$precision), $lng/pow(10, static::$precision));
+         }
 
         }
         /*
